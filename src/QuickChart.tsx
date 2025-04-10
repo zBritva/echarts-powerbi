@@ -243,13 +243,17 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
                                 }}
                             />
                         </Sider>
-                        <Layout style={{ padding: '0 0 15px 0', overflowY: 'auto', background: 'transparent' }}>
+                        <Layout style={{
+                                padding: '0 0 15px 0',
+                                overflowY: 'unset',
+                                background: 'transparent',
+                            }}>
                             <Content
                                 style={{
                                     padding: 0,
                                     margin: 0,
                                     minHeight: 280,
-                                    background: colorBgContainer,
+                                    background: colorBgContainer
                                 }}
                             >
                                 <div className="card">
@@ -264,123 +268,125 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
                                         <a className="docs-link" onClick={(e) => host.launchUrl('https://ilfat-galiev.im/docs/echarts-visual/')}>Documentation</a>
                                     </Flex>
                                 </div>
-                                <div className="card">
-                                    <h4 className="card-title">Preview</h4>
-                                    <Viewer
-                                        dataset={dataset}
-                                        height={height * (9 / 10)}
-                                        width={width - 300}
-                                        echartJSON={content}
-                                    />
-                                </div>
-                                <div className="card">
-                                    <Tabs
-                                        className="tabs-header"
-                                        defaultActiveKey="1"
-                                        items={[
-                                            {
-                                                key: '1',
-                                                label: 'Configuration',
-                                                children: (
-                                                    <>
-                                                        <AceEditor
-                                                            className="editor"
-                                                            width="100%"
-                                                            height={`${height * (9 / 10)}px`}
-                                                            mode="json"
-                                                            theme="github"
-                                                            onChange={(edit) => {
-                                                                draft.current = edit;
-                                                            }}
-                                                            setOptions={{
-                                                                useWorker: false
-                                                            }}
-                                                            value={schema}
-                                                            name="CONFIGURATION_ID"
-                                                            editorProps={{ $blockScrolling: true }}
-                                                        />
-                                                    </>
-                                                )
-                                            },
-                                            {
-                                                key: '2',
-                                                label: 'Configuration output',
-                                                children: (
-                                                    <>
-                                                        <AceEditor
-                                                            className="editor"
-                                                            width="100%"
-                                                            height={`${height * (9 / 10)}px`}
-                                                            mode="json"
-                                                            theme="github"
-                                                            setOptions={{
-                                                                useWorker: false,
-                                                                readOnly: true
-                                                            }}
-                                                            value={content}
-                                                            name="OUTPUT_ID"
-                                                            editorProps={{ $blockScrolling: true }}
-                                                        />
-                                                    </>
-                                                )
-                                            },
-                                            {
-                                                key: '3',
-                                                label: 'Resources',
-                                                children: (
-                                                    <>
-                                                        <Flex vertical={true}>
-                                                            <div
-                                                                style={{
-                                                                    width:"100%",
-                                                                    height: `${height * (9 / 10)}px`
+                                <div className="card scroll-view">
+                                    <div className="card">
+                                        <h4 className="card-title">Preview</h4>
+                                        <Viewer
+                                            dataset={dataset}
+                                            height={height * (9 / 10)}
+                                            width={width - 300}
+                                            echartJSON={content}
+                                        />
+                                    </div>
+                                    <div className="card">
+                                        <Tabs
+                                            className="tabs-header"
+                                            defaultActiveKey="1"
+                                            items={[
+                                                {
+                                                    key: '1',
+                                                    label: 'Configuration',
+                                                    children: (
+                                                        <>
+                                                            <AceEditor
+                                                                className="editor"
+                                                                width="100%"
+                                                                height={`${height * (9 / 10)}px`}
+                                                                mode="json"
+                                                                theme="github"
+                                                                onChange={(edit) => {
+                                                                    draft.current = edit;
                                                                 }}
-                                                            >
-                                                                <Flex vertical={false} className="resource-loader">
-                                                                    <input ref={fileInput} type="file" style={{display: 'none'}} onChange={async () => {
-                                                                        const data = await LoadDataFromFile(fileInput.current);
-                                                                        if (!data) return;
-                                                                        const resource = {
-                                                                            size: `${Math.round(fileInput.current.files[0].size / 1024)}kb`,
-                                                                            name: replaceResourceName(resourceName || fileInput.current.files[0].name),
-                                                                            value: data
-                                                                        };
-                                                                        resourcesList.push(resource);
-                                                                        registerVariable(resource.name, resource.value);
-                                                                        setResourcesList([...resourcesList]);
-                                                                    }} />
-                                                                    <Input value={resourceName} placeholder="Resource name" width={300} onChange={(value) => {
-                                                                        setResourceName(value.target.value);
-                                                                    }} />
-                                                                    <Button onClick={() => fileInput.current.click()} className="resource-loader-button" type="primary" icon={<PlusOutlined />} />
-                                                                </Flex>
-                                                                <Table dataSource={resourcesList} columns={[
-                                                                    {
-                                                                        title: 'Resource name',
-                                                                        dataIndex: 'name',
-                                                                        key: 'name',
-                                                                        render: (value: any, record: any, index: number) => <p className="user-select-all">{value}</p>
-                                                                    },
-                                                                    {
-                                                                        title: 'Size',
-                                                                        dataIndex: 'size',
-                                                                        key: 'size',
-                                                                    },
-                                                                    {
-                                                                        title: 'Action',
-                                                                        dataIndex: '',
-                                                                        key: 'remove',
-                                                                        render: (value: any, record: any, index: number) => <Button onClick={() => onRemoveResource(index)}>Delete</Button>,
-                                                                    }
-                                                                ]} />
-                                                            </div>
-                                                        </Flex>
+                                                                setOptions={{
+                                                                    useWorker: false
+                                                                }}
+                                                                value={schema}
+                                                                name="CONFIGURATION_ID"
+                                                                editorProps={{ $blockScrolling: true }}
+                                                            />
+                                                        </>
+                                                    )
+                                                },
+                                                {
+                                                    key: '2',
+                                                    label: 'Configuration output',
+                                                    children: (
+                                                        <>
+                                                            <AceEditor
+                                                                className="editor"
+                                                                width="100%"
+                                                                height={`${height * (9 / 10)}px`}
+                                                                mode="json"
+                                                                theme="github"
+                                                                setOptions={{
+                                                                    useWorker: false,
+                                                                    readOnly: true
+                                                                }}
+                                                                value={content}
+                                                                name="OUTPUT_ID"
+                                                                editorProps={{ $blockScrolling: true }}
+                                                            />
+                                                        </>
+                                                    )
+                                                },
+                                                {
+                                                    key: '3',
+                                                    label: 'Resources',
+                                                    children: (
+                                                        <>
+                                                            <Flex vertical={true}>
+                                                                <div
+                                                                    style={{
+                                                                        width:"100%",
+                                                                        height: `${height * (9 / 10)}px`
+                                                                    }}
+                                                                >
+                                                                    <Flex vertical={false} className="resource-loader">
+                                                                        <input ref={fileInput} type="file" style={{display: 'none'}} onChange={async () => {
+                                                                            const data = await LoadDataFromFile(fileInput.current);
+                                                                            if (!data) return;
+                                                                            const resource = {
+                                                                                size: `${Math.round(fileInput.current.files[0].size / 1024)}kb`,
+                                                                                name: replaceResourceName(resourceName || fileInput.current.files[0].name),
+                                                                                value: data
+                                                                            };
+                                                                            resourcesList.push(resource);
+                                                                            registerVariable(resource.name, resource.value);
+                                                                            setResourcesList([...resourcesList]);
+                                                                        }} />
+                                                                        <Input value={resourceName} placeholder="Resource name" width={300} onChange={(value) => {
+                                                                            setResourceName(value.target.value);
+                                                                        }} />
+                                                                        <Button onClick={() => fileInput.current.click()} className="resource-loader-button" type="primary" icon={<PlusOutlined />} />
+                                                                    </Flex>
+                                                                    <Table dataSource={resourcesList} columns={[
+                                                                        {
+                                                                            title: 'Resource name',
+                                                                            dataIndex: 'name',
+                                                                            key: 'name',
+                                                                            render: (value: any, record: any, index: number) => <p className="user-select-all">{value}</p>
+                                                                        },
+                                                                        {
+                                                                            title: 'Size',
+                                                                            dataIndex: 'size',
+                                                                            key: 'size',
+                                                                        },
+                                                                        {
+                                                                            title: 'Action',
+                                                                            dataIndex: '',
+                                                                            key: 'remove',
+                                                                            render: (value: any, record: any, index: number) => <Button onClick={() => onRemoveResource(index)}>Delete</Button>,
+                                                                        }
+                                                                    ]} />
+                                                                </div>
+                                                            </Flex>
 
-                                                    </>
-                                                )
-                                            }
-                                        ]}
-                                    />
+                                                        </>
+                                                    )
+                                                }
+                                            ]}
+                                        />
+                                    </div>
                                 </div>
                             </Content>
                         </Layout>
