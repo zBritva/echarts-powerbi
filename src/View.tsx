@@ -11,7 +11,7 @@ echarts.registerTransform(transform.clustering);
 
 import { ErrorViewer } from "./Error";
 import Layout from "antd/es/layout/layout";
-import { applyData, getTheFirstDataset } from "./utils";
+import { applyData, applyFormatter, getTheFirstDataset } from "./utils";
 
 export interface ViewerProps {
     onClick?: (params: any) => void;
@@ -39,7 +39,9 @@ export const Viewer: React.FC<ViewerProps> = ({ height, width, echartJSON, datas
     React.useEffect(() => {
         try {
             setParsingError(null);
-            echart.current = applyData(JSON5.parse(echartJSON), getTheFirstDataset(dataset));
+            let parsed = JSON5.parse(echartJSON);
+            parsed = applyData(parsed, getTheFirstDataset(dataset));
+            echart.current = applyFormatter(parsed);
             echart.current.dataset = dataset;
         } catch(e) {
             setParsingError(e.message);

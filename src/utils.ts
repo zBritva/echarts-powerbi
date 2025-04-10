@@ -6,7 +6,8 @@ import PrimitiveValue = powerbiVisualsApi.PrimitiveValue;
 import ISelectionId = powerbiVisualsApi.visuals.ISelectionId;
 
 import dompurify from "dompurify";
-import { utcParse } from "d3-time-format";
+import { utcParse, timeFormat } from "d3-time-format";
+import * as d3Format from "d3-format";
 import JSON5 from 'json5'
 
 export type Column = Pick<DataViewMetadataColumn, "displayName" | "index">;
@@ -264,6 +265,28 @@ export function applyData(echartJson: echarts.EChartOption, dataset: echarts.ECh
     return echartJson;
 }
 
+export function applyFormatter(echartJson: echarts.EChartOption) : echarts.EChartOption {
+    
+    if (echartJson) {
+        walk(null, echartJson, (key: string, value: any, parent: any, tail: string) => {
+            if (key === 'formatter') {
+                if (value['d3'] && value['d3'].type === 'time') {
+                    parent[key] = (d: any) => {
+                        return timeFormat(value['d3'].pattern)(d);
+                    }
+                }
+                if (value['d3'] && (value['d3'].type === 'number' || value['d3'].type == null)) {
+                    parent[key] = (d: any) => {
+                        return d3Format.format(value['d3'].pattern)(d);
+                    }
+                }
+            }
+        }, "options")
+    }
+
+    return echartJson;
+}
+
 export function verifyColumns(echartJson: string | undefined, chartColumns: string[], visualColumns: powerbiVisualsApi.DataViewMetadataColumn[]) : Record<string, string>[] {
     // TODO walk through tree to find encode
     const unmappedColumns = [];
@@ -291,22 +314,6 @@ export function verifyColumns(echartJson: string | undefined, chartColumns: stri
     }
     return unmappedColumns;
 }
-
-// export function verifyColumnsByType(options: EChartOption<Series>, visualColumns: powerbiVisualsApi.DataViewMetadataColumn[]) {
-//     const unmappedColumns: string[] = [];
-//     if (options.series) {
-//         options.series.forEach(series => {
-//             if (series.type === 'line') {
-//                 const line: LineSeriesOption = (series as LineSeriesOption);
-//                 if (line.encode['x']) {
-//                     if (visualColumns.find(vc => vc.displayName === line.encode['x'])) {
-//                         unmappedColumns.push(line.encode['x'] as string);
-//                     }
-//                 } 
-//             }
-//         });
-//     }
-// }
 
 export function getTheFirstDataset(dataset: echarts.EChartOption.Dataset | echarts.EChartOption.Dataset[]) : echarts.EChartOption.Dataset {
     let ds;
