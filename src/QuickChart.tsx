@@ -11,7 +11,7 @@ import { ErrorViewer } from "./Error";
 
 import { Button, Flex, Layout, Menu, MenuProps, theme, Tabs, Input, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getChartColumns, verifyColumns, uncommentCodeComments } from "./utils";
+import { uncommentCodeComments } from "./utils";
 // import { Mapping } from "./Mapping";
 import { Viewer } from "./View";
 
@@ -119,7 +119,7 @@ export interface QuickChartProps {
     dataView: DataView;
     current: string;
     resources: Resource[];
-    onSave: (json: string, resources: Resource[]) => void;
+    onSave: (json: string, tutorial: string, resources: Resource[]) => void;
 }
 
 /* eslintd-isable max-lines-per-function */
@@ -129,6 +129,8 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
     const isString = typeof defaultSchema == 'string';
     const [schema, setSchema] = React.useState<string>(isString ? defaultSchema : JSON5.stringify(defaultSchema, null, " "));
     const host = useAppSelector((state) => state.options.host);
+    const settings = useAppSelector((state) => state.options.settings);
+
     const [resourceName, setResourceName] = useState<string>('');
 
     const [resourcesList, setResourcesList] = useState<Resource[]>(resources);
@@ -209,6 +211,7 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
     }, [host, table, viewport, template])
 
     const draft = React.useRef<string>(schema);
+    const tutorial = React.useRef<string>(settings.chart.tutorial);
 
     const onApplySchema = React.useCallback(() => {
         setSchema(draft.current);
@@ -260,7 +263,7 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
                                     <Flex vertical={false}>
                                         <Button type="primary" onClick={() => {
                                             setSchema(draft.current);
-                                            onSave(draft.current, resourcesList);
+                                            onSave(draft.current, tutorial.current, resourcesList);
                                         }}>
                                             Save
                                         </Button>
@@ -383,7 +386,32 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
 
                                                         </>
                                                     )
-                                                }
+                                                },
+                                                {
+                                                    key: '4',
+                                                    label: 'Introduction template',
+                                                    children: (
+                                                        <>
+                                                            <AceEditor
+                                                                className="editor"
+                                                                width="100%"
+                                                                height={`${height * (9 / 10)}px`}
+                                                                mode="html"
+                                                                theme="github"
+                                                                setOptions={{
+                                                                    useWorker: false,
+                                                                    readOnly: false
+                                                                }}
+                                                                value={settings.chart.tutorial}
+                                                                onChange={(edit) => {
+                                                                    tutorial.current = edit;
+                                                                }}
+                                                                name="TEMPLATE_OUTPUT_ID"
+                                                                editorProps={{ $blockScrolling: true }}
+                                                            />
+                                                        </>
+                                                    )
+                                                },
                                             ]}
                                         />
                                     </div>
