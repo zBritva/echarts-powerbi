@@ -5,12 +5,9 @@ import DataViewMetadataColumn = powerbiVisualsApi.DataViewMetadataColumn;
 import PrimitiveValue = powerbiVisualsApi.PrimitiveValue;
 import ISelectionId = powerbiVisualsApi.visuals.ISelectionId;
 
-import { Config as DompurifyConfig, sanitize } from "dompurify";
-import { EChartOption, LineSeriesOption } from "echarts";
+import dompurify from "dompurify";
 import { utcParse } from "d3-time-format";
 import JSON5 from 'json5'
-
-import Series = EChartOption.Series;
 
 export type Column = Pick<DataViewMetadataColumn, "displayName" | "index">;
 export type PowerbiColumn = powerbiVisualsApi.DataViewCategoryColumn | powerbiVisualsApi.DataViewValueColumn
@@ -25,7 +22,7 @@ export interface Table {
     columns: Column[];
 }
 
-export const defaultDompurifyConfig = <DompurifyConfig>{
+export const defaultDompurifyConfig = <dompurify.Config>{
     SANITIZE_DOM: true,
     ALLOW_ARIA_ATTR: false,
     ALLOW_UNKNOWN_PROTOCOLS: false,
@@ -34,7 +31,7 @@ export const defaultDompurifyConfig = <DompurifyConfig>{
 };
 
 export function sanitizeHTML(dirty: string) {
-    return sanitize(dirty, defaultDompurifyConfig) as string;
+    return dompurify.sanitize(dirty, defaultDompurifyConfig) as string;
 }
 
 /** uncoments block and line  comments of string of code */
