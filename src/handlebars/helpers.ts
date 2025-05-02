@@ -168,6 +168,11 @@ Handlebars.registerHelper('array', (...options) => {
     return options
 })
 
+Handlebars.registerHelper('parse', (...options) => {
+    options.pop()
+    return JSON.parse(options.pop());
+})
+
 Handlebars.registerHelper('map', (array, key) => {
     return array.map(o => o[key]);
 })
