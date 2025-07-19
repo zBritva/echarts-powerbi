@@ -8,6 +8,8 @@ import { useAppSelector } from "./redux/hooks";
 import { IVisualSettings } from "./settings";
 import { registerGlobal, registerVariable } from "./handlebars/helpers";
 import { Resource } from "./QuickChart";
+import JSON5 from 'json5'
+import * as Handlebars from "handlebars";
 
 export interface TutorialProps {
     width: number;
@@ -37,7 +39,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ height, width, host, templat
             return host.colorPalette.getColor(val).value
         })
         registerGlobal('table', table)
-        const resources: Resource[] = JSON.parse(settings.chart.resources);
+        const resources: Resource[] = JSON5.parse(settings.chart.resources);
         Object.keys(resources).forEach((key) => {
             registerVariable(resources[key].name, resources[key].value);
         });

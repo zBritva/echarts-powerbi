@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import React, { useCallback, useRef, useState } from "react";
-import Handlebars from "handlebars";
+import * as Handlebars from "handlebars";
 import JSON5 from 'json5'
 import * as echarts from 'echarts';
 
@@ -25,6 +25,7 @@ import { registerVariable, unregisterVariable } from "./handlebars/helpers";
 
 import AceEditor from "react-ace";
 
+import "ace-builds/src-noconflict/mode-json5";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";

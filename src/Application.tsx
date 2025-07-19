@@ -5,7 +5,7 @@ import powerbiApi from "powerbi-visuals-api";
 import { Viewer } from './View';
 import { Tutorial } from './Tutorial';
 import { QuickChart, Resource } from './QuickChart';
-import Handlebars from "handlebars";
+import * as Handlebars from "handlebars";
 import JSON5 from 'json5'
 
 import { useAppSelector, useAppDispatch } from './redux/hooks';
@@ -165,7 +165,7 @@ export const Application: React.FC<ApplicationProps> = () => {
                     const newSettings: IVisualSettings = JSON5.parse(JSON5.stringify(settings));
                     newSettings.chart.echart = json;
                     newSettings.chart.tutorial = tutorial; 
-                    newSettings.chart.resources = JSON.stringify(resources, null, "");
+                    newSettings.chart.resources = JSON5.stringify(resources, null, "");
                     dispatch(setSettings(newSettings));
                     persistProperty(json, tutorial, newSettings.chart.resources);
                 }}
