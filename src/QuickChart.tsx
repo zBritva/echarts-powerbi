@@ -218,6 +218,11 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
         setSchema(draft.current);
     }, [setSchema]);
 
+    const onOpenSupport = React.useCallback(() => {
+        host.launchUrl('');
+    }, [host]);
+
+
     return (
         <>
             {error ? (
@@ -269,6 +274,7 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
                                             Save
                                         </Button>
                                         <Button className="apply" onClick={onApplySchema}>Apply</Button>
+                                        <Button className="apply" danger type="default" onClick={onOpenSupport}>Support Dev by Stripe</Button>
                                         <a className="docs-link" onClick={(e) => host.launchUrl('https://ilfat-galiev.im/docs/echarts-visual/')}>Documentation</a>
                                     </Flex>
                                 </div>
@@ -388,31 +394,31 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
                                                         </>
                                                     )
                                                 },
-                                                {
-                                                    key: '4',
-                                                    label: 'Introduction template',
-                                                    children: (
-                                                        <>
-                                                            <AceEditor
-                                                                className="editor"
-                                                                width="100%"
-                                                                height={`${height * (9 / 10)}px`}
-                                                                mode="html"
-                                                                theme="github"
-                                                                setOptions={{
-                                                                    useWorker: false,
-                                                                    readOnly: false
-                                                                }}
-                                                                value={settings.chart.tutorial}
-                                                                onChange={(edit) => {
-                                                                    tutorial.current = edit;
-                                                                }}
-                                                                name="TEMPLATE_OUTPUT_ID"
-                                                                editorProps={{ $blockScrolling: true }}
-                                                            />
-                                                        </>
-                                                    )
-                                                },
+                                                // {
+                                                //     key: '4',
+                                                //     label: 'Introduction template',
+                                                //     children: (
+                                                //         <>
+                                                //             <AceEditor
+                                                //                 className="editor"
+                                                //                 width="100%"
+                                                //                 height={`${height * (9 / 10)}px`}
+                                                //                 mode="html"
+                                                //                 theme="github"
+                                                //                 setOptions={{
+                                                //                     useWorker: false,
+                                                //                     readOnly: false
+                                                //                 }}
+                                                //                 value={settings.chart.tutorial}
+                                                //                 onChange={(edit) => {
+                                                //                     tutorial.current = edit;
+                                                //                 }}
+                                                //                 name="TEMPLATE_OUTPUT_ID"
+                                                //                 editorProps={{ $blockScrolling: true }}
+                                                //             />
+                                                //         </>
+                                                //     )
+                                                // },
                                             ]}
                                         />
                                     </div>

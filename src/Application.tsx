@@ -174,8 +174,7 @@ export const Application: React.FC<ApplicationProps> = () => {
     }
     
     if (!dataView || !dataView.categorical || !settings) {
-        const categorical = dataView?.categorical;
-        if (!dataView && !categorical || settings && settings.chart.echart === '{}') {
+        if (dataView && settings && settings.chart.echart === '{}') {
             return (
                 <Tutorial
                     height={viewport.height}
@@ -190,7 +189,7 @@ export const Application: React.FC<ApplicationProps> = () => {
     }
     
     if (!option || !settings) {
-        return (<h1>Loading...</h1>)
+        return (<h4>Loading...</h4>)
     }
 
     return (
