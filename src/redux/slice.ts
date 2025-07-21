@@ -21,9 +21,11 @@ export interface VisualState {
     dataset: EChartOption.Dataset;
     table: Table;
     dataView: DataView;
+    settingsHasLoaded: boolean;
 }
 
 const initialState: VisualState = {
+    settingsHasLoaded: false,
     host: undefined,
     selectionManager: undefined,
     options: undefined,

@@ -59,7 +59,7 @@ module.exports = {
     },
     optimization: {
         concatenateModules: false,
-        minimize: false // enable minimization for create *.pbiviz file less than 2 Mb, can be disabled for dev mode
+        minimize: true // enable minimization for create *.pbiviz file less than 2 Mb, can be disabled for dev mode
     },
     devtool: 'source-map',
     mode: "development",
@@ -147,12 +147,11 @@ module.exports = {
     },
     devServer: {
         static: false,
-        compress: true,
+        compress: false,
         port: 8080, // dev server port
         hot: false,
         liveReload: false,
-        https: {
-        },
+        server: 'https',
         headers: {
             "access-control-allow-origin": "*",
             "cache-control": "public, max-age=0"

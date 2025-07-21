@@ -25,10 +25,15 @@ export interface Table {
 
 export const defaultDompurifyConfig = <dompurify.Config>{
     SANITIZE_DOM: true,
-    ALLOW_ARIA_ATTR: false,
+    ALLOW_ARIA_ATTR: true,
     ALLOW_UNKNOWN_PROTOCOLS: false,
-    ALLOWED_TAGS: ['b', 'sup', 'sub', 'br', 'i'],
-    ALLOWED_ATTR: []
+    FORBID_ATTR: ["href", ""],
+    ALLOWED_TAGS: [
+        "sup", "sub", "abbr", "acronym", "b", "blockquote", "br", "code",
+        "div", "em", "i", "li", "ol", "p", "span", "strong", "table", "td", "tr", "ul",
+        "h1", "h2", "h3", "h4", "h5", "h6", "legend", "mark", "nav", "meter", "menu", "progress",
+        "section", "select", "style", "time", "title", "u"
+    ]
 };
 
 export function sanitizeHTML(dirty: string) {

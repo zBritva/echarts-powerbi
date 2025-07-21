@@ -1,5 +1,4 @@
 import Handlebars from "handlebars"
-import JSON5 from 'json5'
 
 import { format } from "d3-format"
 import { min, max, filter, median, mean, sum } from "d3-array"

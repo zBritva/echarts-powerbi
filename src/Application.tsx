@@ -5,7 +5,7 @@ import powerbiApi from "powerbi-visuals-api";
 import { Viewer } from './View';
 import { Tutorial } from './Tutorial';
 import { QuickChart, Resource } from './QuickChart';
-import Handlebars from "handlebars";
+import * as Handlebars from "handlebars";
 import JSON5 from 'json5'
 
 import { useAppSelector, useAppDispatch } from './redux/hooks';
@@ -37,13 +37,14 @@ export const Application: React.FC<ApplicationProps> = () => {
     
     const dispatch = useAppDispatch();
 
-    const persistProperty = React.useCallback((json_string: string, resources: string) => {
+    const persistProperty = React.useCallback((json_string: string, tutorial: string, resources: string) => {
         const instance: powerbiApi.VisualObjectInstance = {
             objectName: "chart",
             selector: undefined,
             properties: {
                 echart: json_string,
-                resources: resources
+                resources: resources,
+                tutorial: tutorial
             }
         };
 
@@ -160,33 +161,35 @@ export const Application: React.FC<ApplicationProps> = () => {
                 dataView={dataView}
                 current={chart}
                 resources={JSON5.parse(settings.chart.resources)}
-                onSave={(json, resources) => {
+                onSave={(json, tutorial, resources) => {
                     const newSettings: IVisualSettings = JSON5.parse(JSON5.stringify(settings));
                     newSettings.chart.echart = json;
-                    newSettings.chart.resources = JSON.stringify(resources, null, "");
+                    newSettings.chart.tutorial = tutorial; 
+                    newSettings.chart.resources = JSON5.stringify(resources, null, "");
                     dispatch(setSettings(newSettings));
-                    persistProperty(json, newSettings.chart.resources);
+                    persistProperty(json, tutorial, newSettings.chart.resources);
                 }}
             />
         );
     }
     
     if (!dataView || !dataView.categorical || !settings) {
-        const categorical = dataView?.categorical;
-        if (!dataView && !categorical || settings && settings.chart.echart === '{}') {
+        if (dataView && settings && settings.chart.echart === '{}') {
             return (
                 <Tutorial
                     height={viewport.height}
                     width={viewport.width}
                     dataset={dataset}
                     host={host}
+                    template={settings.chart.tutorial}
+                    settings={settings}
                 />
             )
         }
     }
     
     if (!option || !settings) {
-        return (<h1>Loading...</h1>)
+        return (<h4>Loading...</h4>)
     }
 
     return (

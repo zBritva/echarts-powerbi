@@ -24,8 +24,8 @@ export const ErrorViewer: React.FC<ErrorViewerProps> = ({ error, json, height })
             <AceEditor
                 width="100%"
                 height={`${height * (9 / 10)}px`}
-                mode="json"
-                theme="github"
+                mode={"json5"}
+                theme={"github"}
                 setOptions={{
                     useWorker: false,
                     readOnly: true,
