@@ -219,9 +219,12 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
     }, [setSchema]);
 
     const onOpenSupport = React.useCallback(() => {
-        host.launchUrl('');
+        host.launchUrl('https://donate.stripe.com/00w6oHbf06sg07M9bXgUM01');
     }, [host]);
 
+    const onOpenDocs = React.useCallback(() => {
+        host.launchUrl('https://ilfat-galiev.im/docs/echarts-visual');
+    }, [host]);
 
     return (
         <>
@@ -275,7 +278,7 @@ export const QuickChart: React.FC<QuickChartProps> = ({ height, width, dataset: 
                                         </Button>
                                         <Button className="apply" onClick={onApplySchema}>Apply</Button>
                                         <Button className="apply" danger type="default" onClick={onOpenSupport}>Support Dev by Stripe</Button>
-                                        <a className="docs-link" onClick={(e) => host.launchUrl('https://ilfat-galiev.im/docs/echarts-visual/')}>Documentation</a>
+                                        <a className="docs-link" onClick={onOpenDocs}>Documentation</a>
                                     </Flex>
                                 </div>
                                 <div className="card scroll-view">

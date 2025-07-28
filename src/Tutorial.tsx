@@ -100,7 +100,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ height, width, host, templat
                     <div className="home-subtitle">An Open Source JavaScript Visualization Library</div>
                     <div className="home-btn-panel">
                         <a href="#" className="btn btn-main btn-index-home" onClick={(e) => {
-                            host.launchUrl("https://ilfat-galiev.im/docs/echarts-visual/");
+                            host.launchUrl("https://ilfat-galiev.im/docs/echarts-visual");
                             e.stopPropagation();
                             e.preventDefault();
                         }}>
